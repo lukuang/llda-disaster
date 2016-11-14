@@ -10,8 +10,9 @@ import argparse
 import codecs
 import csv 
 from collections import namedtuple
-from myStemmer import pstem as stem
+#from myStemmer import pstem as stem
 from myUtility.misc import Stopword_Handler
+from stemming.porter2 import stem
 
 Sinlge_LLDA_Document = namedtuple('Sinlge_LLDA_Document', ['did', 'labels','text'])
 
