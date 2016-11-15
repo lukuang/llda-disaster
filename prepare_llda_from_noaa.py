@@ -25,12 +25,14 @@ def get_data_from_cell(row,field_name):
 
 
 def process_event_type_string(event_type_string):
+    #origin = event_type_string
+    
     event_type_string = re.sub("/ ","/",event_type_string.lower())
-    event_type_string = re.sub(", ","/",event_type_string)
+    event_type_string = re.sub(", ?","/",event_type_string)
     event_type_string = re.sub("tstm","thunderstorm",event_type_string)
     event_types = event_type_string.split("/")
-    for e_type in event_types:
-        e_type = re.sub(" ","_",e_type)
+    for i in range(len(event_types)):
+        event_types[i] = re.sub("\s","_",event_types[i])
 
     return event_types
 
@@ -117,6 +119,8 @@ def read_data_use_episode(noaa_dir,use_disaster_cate):
                 if len(episode_narrative) == 0 and len(event_narrative)==0:
                     continue
 
+                if not episode_id.isdigit():
+                    continue
                 if episode_id not in episode_data:
 
                     episode_data[episode_id]= {
