@@ -21,7 +21,8 @@ class Update_Crawler(object):
     def __init__(self,update_list_dir,updates_dir,sleep_time=5,report_count=100):
         self._update_list_dir,self._updates_dir, self._sleep_time, self._report_count =\
             update_list_dir,updates_dir,sleep_time,report_count
-
+        
+        self._links = {}
         self._page_count = 0
         self._load_records()
 
@@ -33,7 +34,6 @@ class Update_Crawler(object):
             self._records = json.load(open(self._record_file))
 
     def get_update_list(self):
-        self._links = {}
         link_count = 0
         for update_list_file in os.walk(self._update_list_dir).next()[2]:
             
@@ -62,15 +62,17 @@ class Update_Crawler(object):
         for date_string in self._links:
             file_index = 0
             for link in self._links[date_string]:
-                url = "http://reliefweb.int" +link
-                content = self._crawl(url,[])
-                if content:
-                    self._save_content(file_index,date_string,content)
-                    file_index += 1
-                    if link not in self._records:
+                if link not in self._records:
                         self._records[link] = 0
-                    else:
-                        print "Failed to crawl %s" %(url)
+                else:
+                    url = "http://reliefweb.int" +link
+                    content = self._crawl(url,[])
+                    if content:
+                        self._save_content(file_index,date_string,content)
+                        file_index += 1
+                        
+                        else:
+                            print "Failed to crawl %s" %(url)
         
         self._stop()
 
@@ -116,8 +118,10 @@ def main():
     args=parser.parse_args()
 
     update_crawler = Update_Crawler(args.update_list_dir,args.updates_dir)
-    update_crawler.get_update_list()
-    update_crawler.crawl_updates()
+    while True:
+        update_crawler.get_update_list()
+        update_crawler.crawl_updates()
+        time.sleep(1800)
 
 
 if __name__=="__main__":
