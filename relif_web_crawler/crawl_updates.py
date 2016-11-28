@@ -38,7 +38,7 @@ class Update_Crawler(object):
         for update_list_file in os.walk(self._update_list_dir).next()[2]:
             
             if update_list_file.isdigit():
-                print "process file %s" %(update_list_file)
+                #print "process file %s" %(update_list_file)
                 update_list_file = os.path.join(self._update_list_dir,update_list_file)
                 content = open(update_list_file).read()
                 soup = BeautifulSoup(content,'lxml')
@@ -62,17 +62,17 @@ class Update_Crawler(object):
         for date_string in self._links:
             file_index = 0
             for link in self._links[date_string]:
+
                 if link not in self._records:
-                        self._records[link] = 0
-                else:
+                    
                     url = "http://reliefweb.int" +link
                     content = self._crawl(url,[])
                     if content:
                         self._save_content(file_index,date_string,content)
                         file_index += 1
-                        
-                        else:
-                            print "Failed to crawl %s" %(url)
+                        self._records[link] = 0
+                    else:
+                        print "Failed to crawl %s" %(url)
         
         self._stop()
 
@@ -92,6 +92,7 @@ class Update_Crawler(object):
         return content
 
     def _stop(self):
+        self._save_records()
         print "-"*20
         print "Finished crawling"
         print "Crawled %d pages" %(self._page_count)
@@ -121,7 +122,9 @@ def main():
     while True:
         update_crawler.get_update_list()
         update_crawler.crawl_updates()
+        print "Wait 30 min"
         time.sleep(1800)
+
 
 
 if __name__=="__main__":
