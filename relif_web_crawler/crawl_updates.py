@@ -85,7 +85,7 @@ class Update_Crawler(object):
 
         if (self._page_count%self._report_count == 0):
             print "Crawled %d pages" %(self._page_count)
-       
+            self._save_records()
 
         return content
 
@@ -103,6 +103,11 @@ class Update_Crawler(object):
         with open(dest_file,"w") as f:
             f.write(content)
 
+    def  _save_records(self):
+        with open(self._record_file,"w") as f:
+            f.write(json.dumps(self._records))
+
+
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -114,7 +119,7 @@ def main():
     update_crawler.get_update_list()
     update_crawler.crawl_updates()
 
-    
+
 if __name__=="__main__":
     main()
 
