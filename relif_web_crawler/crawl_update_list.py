@@ -66,8 +66,7 @@ class Relief_Web_Crawler(Iterative_Crawler):
         with open(result_file,"w") as f:
             f.write(content)
         self._file_index += 1
-        if (self._page_count==10):
-            self._stop()
+        
 
 
 
