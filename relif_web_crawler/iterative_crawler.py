@@ -19,7 +19,7 @@ class Iterative_Crawler(object):
     """
     __metaclass__ = ABCMeta
 
-    def __init__(self,starting_url,dest_dir,sleep_time=5,report_count=100):
+    def __init__(self,starting_url,dest_dir,sleep_time=2,report_count=100):
         self._starting_url, self._dest_dir, self._sleep_time, self._report_count =\
             starting_url,dest_dir,sleep_time,report_count
         self._file_index = 0

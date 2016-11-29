@@ -18,7 +18,7 @@ sys.setdefaultencoding('utf-8')
 
 
 class Update_Crawler(object):
-    def __init__(self,update_list_dir,updates_dir,sleep_time=5,report_count=100):
+    def __init__(self,update_list_dir,updates_dir,sleep_time=2,report_count=100):
         self._update_list_dir,self._updates_dir, self._sleep_time, self._report_count =\
             update_list_dir,updates_dir,sleep_time,report_count
         
