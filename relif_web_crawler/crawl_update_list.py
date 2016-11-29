@@ -38,7 +38,7 @@ class Relief_Web_Crawler(Iterative_Crawler):
     def shift_start(self):
         """Change the starting page
         """
-        crawled_files = [int(x) for x in os.walk().next(self._dest_dir)[2]]
+        crawled_files = [int(x) for x in os.walk(self._dest_dir).next()[2]]
         start_from = max(crawled_files) + 1
         print "Start from %d" %start_from
         self._file_index = start_from
