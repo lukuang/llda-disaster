@@ -35,9 +35,12 @@ class Relief_Web_Crawler(Iterative_Crawler):
     #         self._records = json.load(open(self._record_file))
 
 
-    def shift_start(self,start_from)
+    def shift_start(self):
         """Change the starting page
         """
+        crawled_files = [int(x) for x in os.walk().next(self._dest_dir)[2]]
+        start_from = max(crawled_files) + 1
+        print "Start from %d" %start_from
         self._file_index = start_from
         self._starting_url = "%s&page=%d" %(self._starting_url,start_from)
 
@@ -72,13 +75,13 @@ class Relief_Web_Crawler(Iterative_Crawler):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("dest_dir")
-    parser.add_argument("--start_from",'-sf',type=int)
+    parser.add_argument("--start_from",'-sf',action='store_true')
     args=parser.parse_args()
 
     relief_web_crawler = Relief_Web_Crawler(STARTING_URL,args.dest_dir)    
 
     if args.start_from:
-        relief_web_crawler.shift_start(args.start_from)
+        relief_web_crawler.shift_start()
 
     relief_web_crawler.start_crawling()
 
