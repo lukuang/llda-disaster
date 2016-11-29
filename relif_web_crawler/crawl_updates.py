@@ -49,8 +49,8 @@ class Update_Crawler(object):
                     divs = title.findAll("div")
                     [div.extract() for div in divs] 
                     if date_string not in self._links:
-                            self._links[date_string] = []
-                    self._links[date_string].append(title.a["href"])
+                            self._links[date_string] = {}
+                    self._links[date_string][title.a["href"]] = re.sub("[^\w]+","_",title.a.text)
                     link_count += 1
         print "Finish get update list"
         print "There are %d updates" %(link_count)
@@ -60,16 +60,14 @@ class Update_Crawler(object):
 
     def crawl_updates(self):
         for date_string in self._links:
-            file_index = 0
             for link in self._links[date_string]:
-
+                file_name = self._links[date_string][link]
                 if link not in self._records:
                     
                     url = "http://reliefweb.int" +link
                     content = self._crawl(url,[])
                     if content:
-                        self._save_content(file_index,date_string,content)
-                        file_index += 1
+                        self._save_content(file_name,date_string,content)
                         self._records[link] = 0
                     else:
                         print "Failed to crawl %s" %(url)
@@ -98,11 +96,11 @@ class Update_Crawler(object):
         print "Crawled %d pages" %(self._page_count)
 
 
-    def _save_content(self,file_index,date_string,content):
+    def _save_content(self,file_name,date_string,content):
         date_dir = os.path.join(self._updates_dir,date_string)
         if not os.path.exists(date_dir):
             os.mkdir(date_dir)
-        dest_file = os.path.join(date_dir,str(file_index))
+        dest_file = os.path.join(date_dir,file_name)
         with open(dest_file,"w") as f:
             f.write(content)
 
