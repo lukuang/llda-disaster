@@ -32,7 +32,13 @@ class Iterative_Crawler(object):
 
     def _crawl(self,url_now,params):
         #print "Crawling %s" %(url_now)
-        r = requests.get(url_now, params=params)
+        try:
+            r = requests.get(url_now, params=params)
+        except Exception as e:
+            print e
+            print "Wait 30 mins and try again"
+            time.sleep(1800)
+            r = requests.get(url_now, params=params)
         content = r.content
         self._page_count += 1
         next_url , next_params = self._process_content(content,params)
