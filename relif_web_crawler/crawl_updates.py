@@ -88,9 +88,9 @@ class Update_Crawler(object):
             print "Wait 10 mins and try again"
             time.sleep(300)
             print "Turn on wifi" 
-            os.system('nmcli nm wifi off')
+            os.system('nmcli nm wifi on')
             time.sleep(300)
-            
+
             r = requests.get(url_now, params=params)
 
         content = r.content
