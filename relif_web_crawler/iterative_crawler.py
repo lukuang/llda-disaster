@@ -36,8 +36,14 @@ class Iterative_Crawler(object):
             r = requests.get(url_now, params=params)
         except Exception as e:
             print e
-            print "Wait 30 mins and try again"
-            time.sleep(1800)
+            print "Turn off wifi"
+            os.system('nmcli nm wifi off')
+            print "Wait 10 mins and try again"
+            time.sleep(300)
+            print "Turn on wifi" 
+            os.system('nmcli nm wifi off')
+            time.sleep(300)
+
             r = requests.get(url_now, params=params)
         content = r.content
         self._page_count += 1
