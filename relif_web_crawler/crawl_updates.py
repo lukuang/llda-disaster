@@ -10,6 +10,7 @@ import argparse
 import codecs
 import time
 import requests
+import subprocess
 from bs4 import BeautifulSoup
 from datetime import datetime
 
@@ -83,13 +84,20 @@ class Update_Crawler(object):
             r = requests.get(url_now, params=params)
         except Exception as e:
             print e
-            print "Turn off wifi"
-            os.system('nmcli nm wifi off')
             print "Wait 10 mins and try again"
-            time.sleep(300)
-            print "Turn on wifi" 
-            os.system('nmcli nm wifi on')
-            time.sleep(300)
+            command = ["nmcli",'nm','wifi']
+            p1 = subprocess.Popen(command,stdout=subprocess.PIPE)
+            output=p1.communicate()[0]
+            if output.find('enabled')!=-1:
+                print "Turn off wifi"
+                os.system('nmcli nm wifi off')
+                time.sleep(300)
+                print "Turn on wifi" 
+                os.system('nmcli nm wifi on')
+                time.sleep(300)
+            else:
+                time.sleep(600)
+
 
             r = requests.get(url_now, params=params)
 
