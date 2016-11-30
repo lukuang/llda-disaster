@@ -37,6 +37,7 @@ class Iterative_Crawler(object):
             r = requests.get(url_now, params=params)
         except Exception as e:
             print e
+            print time.ctime()
             print "Wait 10 mins and try again"
             command = ["nmcli",'nm','wifi']
             p1 = subprocess.Popen(command,stdout=subprocess.PIPE)
