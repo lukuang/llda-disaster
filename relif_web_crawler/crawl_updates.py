@@ -85,19 +85,25 @@ class Update_Crawler(object):
         except Exception as e:
             print e
             print time.ctime()
-            print "Wait 10 mins and try again"
-            command = ["nmcli",'nm','wifi']
-            p1 = subprocess.Popen(command,stdout=subprocess.PIPE)
-            output=p1.communicate()[0]
-            if output.find('enabled')!=-1:
-                print "Turn off wifi"
-                os.system('nmcli nm wifi off')
-                time.sleep(300)
-                print "Turn on wifi" 
-                os.system('nmcli nm wifi on')
-                time.sleep(300)
+            if sys.platform.find('linux')!=-1:
+                # if it is not linux system, just wait for 20 mins
+                print "Wait 20 mins and try again"
+                time.sleep(1200)
             else:
-                time.sleep(600)
+                # if it is linux system, check if wifi is on
+                command = ["nmcli",'nm','wifi']
+                p1 = subprocess.Popen(command,stdout=subprocess.PIPE)
+                output=p1.communicate()[0]
+                if output.find('enabled')!=-1:
+                    # if wifi is on, turn it off/on and try again
+                    print "Turn off wifi"
+                    os.system('nmcli nm wifi off')
+                    time.sleep(300)
+                    print "Turn on wifi" 
+                    os.system('nmcli nm wifi on')
+                    time.sleep(300)
+                else:
+                    time.sleep(1200)
 
 
             r = requests.get(url_now, params=params)
