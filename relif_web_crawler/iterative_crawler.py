@@ -40,8 +40,8 @@ class Iterative_Crawler(object):
             print time.ctime()
             if sys.platform.find('linux')!=-1:
                 # if it is not linux system, just wait for 20 mins
-                print "Wait 20 mins and try again"
-                time.sleep(1200)
+                print "Wait 30 mins and try again"
+                time.sleep(1800)
             else:
                 # if it is linux system, check if wifi is on
                 command = ["nmcli",'nm','wifi']
@@ -56,7 +56,7 @@ class Iterative_Crawler(object):
                     os.system('nmcli nm wifi on')
                     time.sleep(300)
                 else:
-                    time.sleep(1200)
+                    time.sleep(1800)
                 
 
             r = requests.get(url_now, params=params)
