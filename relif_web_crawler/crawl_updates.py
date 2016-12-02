@@ -86,9 +86,9 @@ class Update_Crawler(object):
             print e
             print time.ctime()
             if sys.platform.find('linux')!=-1:
-                # if it is not linux system, just wait for 30 mins
-                print "Wait 30 mins and try again"
-                time.sleep(1800)
+                # if it is not linux system, just wait for 40 mins
+                print "Wait 40 mins and try again"
+                time.sleep(2400)
             else:
                 # if it is linux system, check if wifi is on
                 command = ["nmcli",'nm','wifi']
@@ -103,7 +103,7 @@ class Update_Crawler(object):
                     os.system('nmcli nm wifi on')
                     time.sleep(300)
                 else:
-                    time.sleep(1800)
+                    time.sleep(2400)
 
 
             r = requests.get(url_now, params=params)
