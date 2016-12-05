@@ -66,7 +66,8 @@ def main():
     parser.add_argument("--start_from",'-sf',action='store_true')
     args=parser.parse_args()
 
-    relief_web_api_crawler = Relief_Web_Api_Crawler(STARTING_URL,args.dest_dir)    
+    starting_url = "%s%s" %(STARTING_URL,PARA_SUBFIX)
+    relief_web_api_crawler = Relief_Web_Api_Crawler(starting_url,args.dest_dir)    
 
     if args.start_from:
         relief_web_api_crawler.shift_start()
