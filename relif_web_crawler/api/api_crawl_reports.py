@@ -15,8 +15,8 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-STARTING_URL = 'http://api.reliefweb.int/v1/reports?appname=udel_infolab&limit=1000'
-PARA_SUBFIX = '&fields[include][]=disaster_type&fields[include][]=theme&fields[include][]=vulnerable_groups&fields[include][]=format&fields[include][]=body&fields[include][]=date.original&sort[]=date:asc&filter[field]=body'
+STARTING_URL = 'http://api.reliefweb.int/v1/reports?appname=infolab_crawler&limit=1000'
+PARA_SUBFIX = '&fields[include][]=disaster_type&fields[include][]=theme&fields[include][]=vulnerable_groups&fields[include][]=format&fields[include][]=body-html&fields[include][]=date.original&sort[]=date:asc&filter[field]=body'
 
 class Relief_Web_Api_Crawler(Iterative_Crawler):    
     """Iteratively crawl lists of reports using api
