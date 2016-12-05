@@ -32,7 +32,7 @@ class Iterative_Crawler(object):
 
 
     def _crawl(self,url_now,params):
-        #print "Crawling %s" %(url_now)
+        print "Crawling %s" %(url_now)
         try:
             r = requests.get(url_now, params=params)
         except Exception as e:
