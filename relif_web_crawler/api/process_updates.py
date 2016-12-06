@@ -8,7 +8,6 @@ import sys
 import re
 import argparse
 import codecs
-from markdown import markdown
 import html2text
 from myUtility.misc import split_list 
 
@@ -81,7 +80,7 @@ def process_update_file(update_file):
             single_document['type']['vulnerable_groups'] = []
 
             for vulnerable_groups_struct in fields['vulnerable_groups']:
-                single_document['type']['format'].append(vulnerable_groups_struct['name'])
+                single_document['type']['vulnerable_groups'].append(vulnerable_groups_struct['name'])
 
         documents.append(single_document)
 
