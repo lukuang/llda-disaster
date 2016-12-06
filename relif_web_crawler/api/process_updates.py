@@ -100,8 +100,8 @@ def get_article_path(update_file,ariticles_dir):
 
 
 def process_updates(sub_update_file_list,ariticles_dir):
-
     for update_file in sub_update_file_list:
+        print "process file %s" %(update_file)
         documents = process_update_file(update_file)
         for document in documents:
 
