@@ -14,6 +14,9 @@ from collections import namedtuple
 from myUtility.misc import Stopword_Handler
 from stemming.porter2 import stem
 
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 Sinlge_LLDA_Document = namedtuple('Sinlge_LLDA_Document', ['ids','text'])
 
 def get_data_from_cell(row,field_name):
@@ -55,11 +58,15 @@ def read_relief_web_data(document_dir,use_disaster_cate,type_used,process,stopwo
                 if category in type_used:
                     for label in document['type'][category]:
                         if label not in labels[category]:
-                            labels[category][label] = label_index
+                            labels[category][label] = str(label_index)
                             label_index += 1
                         document_topic_ids.append(labels[category][label]) 
 
-            document_text = document['text']
+            #ignore documents without needed labels
+            if not document_topic_ids:
+                continue
+
+            document_text = re.sub("\n"," ",document['text'])
             if process:
                 document_text = stopword_handler.remove_stopwords(document['text'].lower())
                 new_text = ""
@@ -76,12 +83,17 @@ def read_relief_web_data(document_dir,use_disaster_cate,type_used,process,stopwo
 
 
 
-def write_llda_input(relief_web_data, labels, dest_file):
-    with open(dest_file,'wb') as f:
+def write_llda_input(relief_web_data, labels, dest_dir):
+    training_data_dest_file = os.path.join(dest_dir,'training_data')
+    with open(training_data_dest_file,'wb') as f:
         spamwriter = csv.writer(f)
         for single_document in relief_web_data:
             ids_string = " ".join(single_document.ids)
             f.write('[%s]%s\n' %(ids_string,single_document.text))
+
+    label_file = os.path.join(dest_dir,'labels')
+    with open(label_file,"w") as f:
+        f.write(json.dumps(labels,indent=4))
             
 
 
@@ -93,7 +105,7 @@ def main():
     parser.add_argument("dest_dir")
     parser.add_argument("--use_disaster_cate","-ud",action='store_true')
     parser.add_argument("--process","-p",action='store_true')
-    parser.add_argument("--type_used","-tu",nagrs='+',
+    parser.add_argument("--type_used","-tu",nargs='+',
                         default=["disaster_type",'theme','vulnerable_groups'])
     args=parser.parse_args()
 
