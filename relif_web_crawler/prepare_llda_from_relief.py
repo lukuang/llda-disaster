@@ -106,7 +106,7 @@ def main():
     parser.add_argument("--use_disaster_cate","-ud",action='store_true')
     parser.add_argument("--process","-p",action='store_true')
     parser.add_argument("--type_used","-tu",nargs='+',
-                        default=["disaster_type",'theme','vulnerable_groups'])
+                        default=["disaster",'theme','vulnerable_groups'])
     args=parser.parse_args()
 
     if args.process:
