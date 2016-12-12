@@ -49,7 +49,7 @@ def read_relief_web_data(document_dir,use_disaster_cate,type_used,process,stopwo
     label_index = 0
 
     if use_disaster_cate:
-        labels["disaster"] = label_index
+        labels["general_disaster"] = str(label_index)
         label_index += 1
 
 
@@ -73,7 +73,7 @@ def read_relief_web_data(document_dir,use_disaster_cate,type_used,process,stopwo
             if not document_topic_ids:
                 continue
 
-            document_topic_ids.append(0)
+            document_topic_ids.append("0")
             document_text = re.sub("\n"," ",document['text'])
             if process:
                 document_text = stopword_handler.remove_stopwords(document['text'].lower())
