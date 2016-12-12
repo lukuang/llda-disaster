@@ -47,6 +47,12 @@ def read_relief_web_data(document_dir,use_disaster_cate,type_used,process,stopwo
         labels[category] = {}
 
     label_index = 0
+
+    if use_disaster_cate:
+        labels["disaster"] = label_index
+        label_index += 1
+
+
     for year in os.walk(document_dir).next()[1]:
         year_dir = os.path.join(document_dir,year)
         print year_dir
@@ -54,6 +60,7 @@ def read_relief_web_data(document_dir,use_disaster_cate,type_used,process,stopwo
             document_file = os.path.join(year_dir,document_name)
             document = json.load(open(document_file))
             document_topic_ids = []
+
             for category in document['type']:
                 if category in type_used:
                     for label in document['type'][category]:
@@ -66,6 +73,7 @@ def read_relief_web_data(document_dir,use_disaster_cate,type_used,process,stopwo
             if not document_topic_ids:
                 continue
 
+            document_topic_ids.append(0)
             document_text = re.sub("\n"," ",document['text'])
             if process:
                 document_text = stopword_handler.remove_stopwords(document['text'].lower())
